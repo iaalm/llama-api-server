@@ -10,3 +10,6 @@ format:
 
 tags:
 	ctags -R pretzel
+
+pack:
+	$(PYTHON) -m build

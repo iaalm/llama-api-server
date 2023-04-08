@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llama_api_server"
-version = "0.1.0"
+version = "0.1.2"
 description = ""
 authors = [
     {name = "iaalm", email= "iaalmsimon@gmail.com"}
@@ -22,6 +22,12 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+  "llamacpp>=0.1.11",
+  "Flask>=2.0.0",
+  "numpy",
 ]
 
 [project.urls]
