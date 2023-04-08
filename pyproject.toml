@@ -28,6 +28,7 @@ dependencies = [
   "llamacpp>=0.1.11",
   "Flask>=2.0.0",
   "numpy",
+  "pyyaml",
 ]
 
 [project.urls]

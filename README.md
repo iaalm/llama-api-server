@@ -49,13 +49,13 @@ openai api completions.create -e text-davinci-003 -p "hello?"
 
 #### Supported APIs
 - [X] Completions
-    - [X] set `temperature`, `top\_p`, and `top\_k`
-    - [X] set `max\_tokens`
+    - [X] set `temperature`, `top_p`, and `top_k`
+    - [X] set `max_tokens`
     - [ ] set `stop`
     - [ ] set `stream`
     - [ ] set `n`
-    - [ ] set `presence\_penalty` and `frequency\_penalty`
-    - [ ] set `logit\_bias`
+    - [ ] set `presence_penalty` and `frequency_penalty`
+    - [ ] set `logit_bias`
 - [X] Embeddings
     - [X] batch process
 - [ ] Chat
@@ -64,8 +64,8 @@ openai api completions.create -e text-davinci-003 -p "hello?"
 - [X] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
 
 #### Others
+- [X] Performance parameters like `n_batch` and `n_thread`
 - [ ] Documents
 - [ ] Token auth
 - [ ] Intergration tests
-- [ ] Performance parameters like `n_batch` and `n_thread`
 - [ ] A tool to download/prepare pretrain model
