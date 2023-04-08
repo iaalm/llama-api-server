@@ -12,8 +12,8 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 
 #### Supported APIs
 - [X] Completions
-    - [ ] set `temperature`, `top\_p`, and `top\_k`
-    - [ ] set `max\_tokens`
+    - [X] set `temperature`, `top\_p`, and `top\_k`
+    - [X] set `max\_tokens`
     - [ ] set `stop`
     - [ ] set `stream`
     - [ ] set `n`
@@ -24,7 +24,7 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 - [ ] Chat
 
 #### Supported backed
-- [ ] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
+- [X] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
 
 #### Others
 - [ ] Documents

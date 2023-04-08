@@ -1,5 +1,5 @@
 import yaml
-from llama_api_server.models.completions.llama_cpp import LlamaCpp
+from llama_api_server.models.llama_cpp import LlamaCpp
 from collections import defaultdict
 
 _pool = defaultdict(lambda: defaultdict(list))

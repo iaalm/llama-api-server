@@ -6,8 +6,8 @@ from llama_api_server.utils import get_uuid, get_timestamp, unpack_cfloat_array
 class LlamaCpp:
     def __init__(self, params):
         self.model_path = params["path"]
-        self.n_batch = 16
-        self.n_thread = 4
+        self.n_batch = params.get("n_batch", None) or 16
+        self.n_thread = params.get("n_thread", None) or 4
 
     def completions(self, args):
         params = llamacpp.LlamaContextParams()
@@ -15,20 +15,22 @@ class LlamaCpp:
 
         model = llamacpp.LlamaContext(self.model_path, params)
 
-        repeat_last_n = 64
-        top_k = 40
-        top_p = 0.95
-        temp = 0.7
+        # args can be None, so need the "or" part to handle
+        top_k = args.get("top_k", None) or 1
+        top_p = args.get("top_p", None) or 1
+        temp = args.get("temperature", None) or 1.0
+        echo = args.get("echo", None) or False
+        max_tokens = args.get("max_tokens", None) or 16
         repeat_penalty = 1.3
 
-        prompt_tokens = model.str_to_token(args["prompt"], True).tolist()
-
+        prompt = args["prompt"]
+        prompt_tokens = model.str_to_token(prompt, True).tolist()
         n_past = self.eval_token(model, prompt_tokens[:-1], 0)
 
-        result = ""
+        result = prompt if echo else ""
         token = prompt_tokens[-1]
         finish_reason = "length"
-        for i in range(20):
+        for i in range(max_tokens):
             model.eval(array.array("i", [token]), 1, n_past, self.n_thread)
 
             token = model.sample_top_p_top_k(
@@ -42,6 +44,8 @@ class LlamaCpp:
             text = model.token_to_str(token)
             result += text
             n_past += 1
+
+        c_prompt_tokens = len(prompt_tokens)
         return {
             "id": get_uuid(),
             "object": "text_completion",
@@ -55,7 +59,11 @@ class LlamaCpp:
                     "finish_reason": finish_reason,
                 }
             ],
-            "usage": {"prompt_tokens": 5, "completion_tokens": 7, "total_tokens": 12},
+            "usage": {
+                "prompt_tokens": c_prompt_tokens,
+                "completion_tokens": n_past - c_prompt_tokens,
+                "total_tokens": n_past,
+            },
         }
 
     def embeddings(self, args):
@@ -83,11 +91,15 @@ class LlamaCpp:
         if not is_array:
             embeds = embeds[0]
 
+        c_prompt_tokens = len(prompt_tokens)
         return {
             "object": "list",
             "data": [{"object": "embedding", "embedding": embed, "index": 0}],
             "model": args["model"],
-            "usage": {"prompt_tokens": 8, "total_tokens": 8},
+            "usage": {
+                "prompt_tokens": c_prompt_tokens,
+                "total_tokens": c_prompt_tokens,
+            },
         }
 
     def eval_token(self, model, tokens, n_past):
