@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: "[BUG]"
-labels: bug
+labels: ''
 assignees: iaalm
 
 ---
@@ -14,7 +14,7 @@ A clear and concise description of what the bug is.
 Steps to reproduce the behavior:
 
 **Log context**
-If applicable, add screenshots to help explain your problem.
+If applicable, log or HTTP request history while this bug occurs:
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
