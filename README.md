@@ -33,5 +33,29 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 - [ ] Performance parameters like `n_batch` and `n_thread`
 - [ ] A tool to download/prepare pretrain model
 
-## Get start
+## Get started
 
+### Install
+```
+pip install llama-api-server
+echo > config.yml << EOF
+models:
+  completions:
+    text-davinci-003:
+      type: llama_cpp
+      params:
+        path: /absolute/path/to/your/7B/ggml-model-q4_0.bin
+  embeddings:
+    text-embedding-ada-002:
+      type: llama_cpp
+      params:
+        path: /absolute/path/to/your/7B/ggml-model-q4_0.bin
+EOF
+python -m python -m llama_api_server
+```
+
+### Call with openai-python
+```
+export OPENAI_API_BASE=http://127.0.0.1:5000/v1
+openai api completions.create -e text-davinci-003 -p "hello?"
+```
