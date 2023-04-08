@@ -6,6 +6,8 @@ from llama_api_server.utils import get_uuid, get_timestamp, unpack_cfloat_array
 class LlamaCpp:
     def __init__(self, params):
         self.model_path = params["path"]
+        self.n_batch = 16
+        self.n_thread = 4
 
     def completions(self, args):
         params = llamacpp.LlamaContextParams()
@@ -20,19 +22,21 @@ class LlamaCpp:
         repeat_penalty = 1.3
 
         prompt_tokens = model.str_to_token(args["prompt"], True).tolist()
-        n_past = 0
 
-        for token in prompt_tokens[:-1]:
-            model.eval(array.array("i", [token]), 1, n_past, 1)
-            n_past += 1
+        n_past = self.eval_token(model, prompt_tokens[:-1], 0)
 
         result = ""
         token = prompt_tokens[-1]
+        finish_reason = "length"
         for i in range(20):
-            model.eval(array.array("i", [token]), 1, n_past, 1)
+            model.eval(array.array("i", [token]), 1, n_past, self.n_thread)
 
-            token = model.sample_top_p_top_k(array.array('i', []), top_k, top_p, temp, repeat_penalty)
+            token = model.sample_top_p_top_k(
+                array.array("i", []), top_k, top_p, temp, repeat_penalty
+            )
             if token == 2:
+                # EOS
+                finish_reason = "stop"
                 break
 
             text = model.token_to_str(token)
@@ -48,7 +52,7 @@ class LlamaCpp:
                     "text": result,
                     "index": 0,
                     "logprobs": None,
-                    "finish_reason": "length",
+                    "finish_reason": finish_reason,
                 }
             ],
             "usage": {"prompt_tokens": 5, "completion_tokens": 7, "total_tokens": 12},
@@ -71,11 +75,7 @@ class LlamaCpp:
 
         for i in inputs:
             prompt_tokens = model.str_to_token(i, True)
-            n_past = 0
-
-            for token in prompt_tokens:
-                model.eval(array.array("i", [token]), 1, n_past, 1)
-                n_past += 1
+            n_past = self.eval_token(model, prompt_tokens, 0)
 
             embed = unpack_cfloat_array(model.get_embeddings())
             embeds.append(embed)
@@ -89,3 +89,12 @@ class LlamaCpp:
             "model": args["model"],
             "usage": {"prompt_tokens": 8, "total_tokens": 8},
         }
+
+    def eval_token(self, model, tokens, n_past):
+        l = len(tokens)
+        for s in range(0, l, self.n_batch):
+            e = min(l, s + self.n_batch)
+            p = e - s
+            model.eval(array.array("i", tokens[s:e]), p, n_past, self.n_thread)
+            n_past += p
+        return n_past

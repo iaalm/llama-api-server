@@ -12,8 +12,15 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 
 #### Supported APIs
 - [X] Completions
-    - [ ] set temperature
-- [ ] Embeddings
+    - [ ] set `temperature`, `top\_p`, and `top\_k`
+    - [ ] set `max\_tokens`
+    - [ ] set `stop`
+    - [ ] set `stream`
+    - [ ] set `n`
+    - [ ] set `presence\_penalty` and `frequency\_penalty`
+    - [ ] set `logit\_bias`
+- [X] Embeddings
+    - [X] batch process
 - [ ] Chat
 
 #### Supported backed
@@ -23,4 +30,5 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 - [ ] Documents
 - [ ] Token auth
 - [ ] Intergration tests
+- [ ] Performance parameters like `n_batch` and `n_thread`
 - [ ] A tool to download/prepare pretrain model
