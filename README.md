@@ -32,3 +32,6 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 - [ ] Intergration tests
 - [ ] Performance parameters like `n_batch` and `n_thread`
 - [ ] A tool to download/prepare pretrain model
+
+## Get start
+
