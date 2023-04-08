@@ -1,0 +1,5 @@
+# this file helps control behavior of "git archive", which also used by github release
+ut_data/        export-ignore
+
+version.txt export-subst
+
