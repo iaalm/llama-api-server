@@ -40,13 +40,13 @@ def completions(name, args):
     args["echo"] = args.get("echo", None) or False
     args["max_tokens"] = args.get("max_tokens", None) or 16
     args["suffix"] = args.get("suffix", None) or ""
-    model = get_model(app, "completions", name)
-    return model.completions(args)
+    with get_model(app, "completions", name) as model:
+        return model.completions(args)
 
 
 def embeddings(name, args):
-    model = get_model(app, "embeddings", name)
-    return model.embeddings(args)
+    with get_model(app, "embeddings", name) as model:
+        return model.embeddings(args)
 
 
 @app.route("/v1/openai/deployments/<deployment>/completions", methods=["POST"])
