@@ -35,6 +35,7 @@ class LlamaCppCompletion:
         temp = args.get("temperature", None) or 1.0
         echo = args.get("echo", None) or False
         max_tokens = args.get("max_tokens", None) or 16
+        suffix = args.get("suffix", None) or ""
         repeat_penalty = 1.3
 
         prompt = args["prompt"]
@@ -69,7 +70,7 @@ class LlamaCppCompletion:
             "model": args["model"],
             "choices": [
                 {
-                    "text": result,
+                    "text": result + suffix,
                     "index": 0,
                     "logprobs": None,
                     "finish_reason": finish_reason,
