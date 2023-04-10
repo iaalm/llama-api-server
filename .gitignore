@@ -3,6 +3,7 @@
 /.idea
 .DS_Store
 /config.yml
+/tokens.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

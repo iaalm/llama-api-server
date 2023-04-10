@@ -32,12 +32,15 @@ models:
         path: /absolute/path/to/your/7B/ggml-model-q4_0.bin
 EOF
 
+echo "SOME_TOKEN" > tokens.txt
+
 # start web server
 python -m llama_api_server
 ```
 
 ### Call with openai-python
 ```
+export OPENAI_API_KEY=SOME_TOKEN
 export OPENAI_API_BASE=http://127.0.0.1:5000/v1
 openai api completions.create -e text-davinci-003 -p "hello?"
 ```
@@ -61,13 +64,15 @@ openai api completions.create -e text-davinci-003 -p "hello?"
 - [X] Embeddings
     - [X] batch process
 - [ ] Chat
+- [ ] List model
 
 #### Supported backed
 - [X] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
 
 #### Others
 - [X] Performance parameters like `n_batch` and `n_thread`
+- [X] Token auth
 - [ ] Documents
-- [ ] Token auth
 - [ ] Intergration tests
 - [ ] A tool to download/prepare pretrain model
+- [ ] Make config.ini and token file configable
