@@ -34,6 +34,12 @@ def requireToken(f):
 
 
 def completions(name, args):
+    args["top_k"] = args.get("top_k", None) or 1
+    args["top_p"] = args.get("top_p", None) or 1.0
+    args["temperature"] = args.get("temperature", None) or 1.0
+    args["echo"] = args.get("echo", None) or False
+    args["max_tokens"] = args.get("max_tokens", None) or 16
+    args["suffix"] = args.get("suffix", None) or ""
     model = get_model(app, "completions", name)
     return model.completions(args)
 

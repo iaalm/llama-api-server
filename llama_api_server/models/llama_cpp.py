@@ -30,12 +30,12 @@ class LlamaCppCompletion:
 
     def completions(self, args):
         # args can be None, so need the "or" part to handle
-        top_k = args.get("top_k", None) or 1
-        top_p = args.get("top_p", None) or 1
-        temp = args.get("temperature", None) or 1.0
-        echo = args.get("echo", None) or False
-        max_tokens = args.get("max_tokens", None) or 16
-        suffix = args.get("suffix", None) or ""
+        top_k = args["top_k"]
+        top_p = args["top_p"]
+        temp = args["temperature"]
+        echo = args["echo"]
+        max_tokens = args["max_tokens"]
+        suffix = args["suffix"]
         repeat_penalty = 1.3
 
         prompt = args["prompt"]
