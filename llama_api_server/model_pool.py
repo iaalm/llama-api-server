@@ -1,9 +1,9 @@
-import yaml
 import datetime
 from collections import defaultdict
 from functools import cache
 from threading import Lock
 from llama_api_server.models.llama_cpp import LlamaCppCompletion, LlamaCppEmbedding
+from .config import get_config
 
 # Eventhrough python is not good at multi-threading, but must work is done by backend,
 # support multi thread with flask threaded mode may be a good idea.
@@ -14,8 +14,7 @@ _pool_count = defaultdict(lambda: defaultdict(int))
 _lock = Lock()
 
 MODEL_TYPE_MAPPING = {
-    "embeddings": {"llama_cpp": LlamaCppEmbedding},
-    "completions": {"llama_cpp": LlamaCppCompletion},
+    "embeddings": {"llama_cpp": LlamaCppEmbedding}, "completions": {"llama_cpp": LlamaCppCompletion},
 }
 
 
@@ -34,19 +33,14 @@ class _ModelInPool:
         _return_model(self, self.kind, self.name)
 
 
-@cache
-def load_config(app):
-    with open(app.config["CONFIG_YAML"], "r") as fd:
-        return yaml.safe_load(fd)
 
-
-def get_model(app, kind, name):
+def get_model(kind, name):
     with _lock:
         p = _pool[kind][name]
         if len(p) > 0:
             model = p.pop()
         else:
-            config = load_config(app)["models"][kind][name]
+            config = get_config()["models"][kind][name]
             if _pool_count[kind][name] < config.get("max_instances", 1):
                 inner_model = MODEL_TYPE_MAPPING[kind][config["type"]](config["params"])
                 model = _ModelInPool(inner_model, kind, name)
@@ -61,19 +55,22 @@ def get_model(app, kind, name):
 
 def _return_model(model, kind, name):
     with _lock:
-        _pool[kind][name].append(model)
+        if get_config()["models"][kind][name].get("idle_timeout",None) != 0:
+            _pool[kind][name].append(model)
+        else:
+            _pool_count[kind][name] -= 1
 
 
-def _retention_model(app):
-    all_config = load_config(app)
+def _retention_model():
+    all_config = get_config()
     with _lock:
         for kind in _pool:
             for name in _pool[kind]:
-                _return_model_raw(app, kind, name)
+                _return_model_raw(kind, name)
 
 
-def _return_model_raw(app, kind, name):
-    config = all_config["models"][kind][name]
+def _return_model_raw(kind, name):
+    config = get_config()["models"][kind][name]
     p = _pool[kind][name]
     oldest_time = datetime.datetime.now() - datetime.timedelta(
         seconds=config.get("idle_timeout", 600)
