@@ -8,7 +8,6 @@ app.config.from_prefixed_env()
 load_config(app)
 
 
-
 @cache
 def getValidTokens():
     token_file = app.config["TOKEN_FILE"]

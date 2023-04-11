@@ -14,7 +14,8 @@ _pool_count = defaultdict(lambda: defaultdict(int))
 _lock = Lock()
 
 MODEL_TYPE_MAPPING = {
-    "embeddings": {"llama_cpp": LlamaCppEmbedding}, "completions": {"llama_cpp": LlamaCppCompletion},
+    "embeddings": {"llama_cpp": LlamaCppEmbedding},
+    "completions": {"llama_cpp": LlamaCppCompletion},
 }
 
 
@@ -31,7 +32,6 @@ class _ModelInPool:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.last_used = datetime.datetime.now()
         _return_model(self, self.kind, self.name)
-
 
 
 def get_model(kind, name):
@@ -55,7 +55,7 @@ def get_model(kind, name):
 
 def _return_model(model, kind, name):
     with _lock:
-        if get_config()["models"][kind][name].get("idle_timeout",None) != 0:
+        if get_config()["models"][kind][name].get("idle_timeout", None) != 0:
             _pool[kind][name].append(model)
         else:
             _pool_count[kind][name] -= 1
