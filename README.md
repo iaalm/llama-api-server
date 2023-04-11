@@ -68,6 +68,7 @@ openai api completions.create -e text-davinci-003 -p "hello?"
 
 #### Supported backed
 - [X] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
+- [ ] [llama]()
 
 #### Others
 - [X] Performance parameters like `n_batch` and `n_thread`
