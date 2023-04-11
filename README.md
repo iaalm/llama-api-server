@@ -13,18 +13,31 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 ### Prepare model
 
 #### llama.cpp
-If you you don't have quantize llama, you need to follow [instruction](https://github.com/ggerganov/llama.cpp#usage) to prepare model.
+If you you don't have quantized llama.cpp, you need to follow [instruction](https://github.com/ggerganov/llama.cpp#usage) to prepare model.
+
+#### llama.cpp
+If you you don't have quantize pyllama, you need to follow [instruction](https://github.com/juncongmoo/pyllama#-quantize-llama-to-run-in-a-4gb-gpu) to prepare model.
+
 
 ### Install
 ```
 pip install llama-api-server
+
+# to run wth pyllama
+pip install llama-api-server[pyllama]
+
 echo > config.yml << EOF
 models:
   completions:
-    text-davinci-003:
+    text-ada-002:
       type: llama_cpp
       params:
         path: /absolute/path/to/your/7B/ggml-model-q4_0.bin
+    text-davinci-003:
+      type: pyllama
+      params:
+        ckpt_dir: /absolute/path/to/your/7B/
+        tokenizer_path: /absolute/path/to/your/tokenizer.model
   embeddings:
     text-embedding-ada-002:
       type: llama_cpp
@@ -68,7 +81,7 @@ openai api completions.create -e text-davinci-003 -p "hello?"
 
 #### Supported backed
 - [X] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
-- [ ] [llama]()
+- [ ] [pyllama](https://github.com/juncongmoo/pyllama)
 
 #### Others
 - [X] Performance parameters like `n_batch` and `n_thread`

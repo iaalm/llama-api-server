@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llama_api_server"
-version = "0.1.3"
+version = "0.2.0"
 description = ""
 authors = [
     {name = "iaalm", email= "iaalmsimon@gmail.com"}
@@ -29,6 +29,12 @@ dependencies = [
   "Flask>=2.0.0",
   "numpy",
   "pyyaml",
+]
+
+[project.optional-dependencies]
+pyllama = [
+    "pyllama>=0.0.9",
+    "transformers>=4.27.4",
 ]
 
 [project.urls]

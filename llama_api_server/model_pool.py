@@ -3,6 +3,7 @@ from collections import defaultdict
 from functools import cache
 from threading import Lock
 from llama_api_server.models.llama_cpp import LlamaCppCompletion, LlamaCppEmbedding
+from llama_api_server.models.pyllama import PyLlamaCompletion
 from .config import get_config
 
 # Eventhrough python is not good at multi-threading, but must work is done by backend,
@@ -15,7 +16,7 @@ _lock = Lock()
 
 MODEL_TYPE_MAPPING = {
     "embeddings": {"llama_cpp": LlamaCppEmbedding},
-    "completions": {"llama_cpp": LlamaCppCompletion},
+    "completions": {"llama_cpp": LlamaCppCompletion, "pyllama": PyLlamaCompletion},
 }
 
 
@@ -55,7 +56,7 @@ def get_model(kind, name):
 
 def _return_model(model, kind, name):
     with _lock:
-        if get_config()["models"][kind][name].get("idle_timeout", None) != 0:
+        if get_config()["models"][kind][name].get("idle_timeout", 0) != 0:
             _pool[kind][name].append(model)
         else:
             _pool_count[kind][name] -= 1
@@ -73,7 +74,7 @@ def _return_model_raw(kind, name):
     config = get_config()["models"][kind][name]
     p = _pool[kind][name]
     oldest_time = datetime.datetime.now() - datetime.timedelta(
-        seconds=config.get("idle_timeout", 600)
+        seconds=config.get("idle_timeout", 0)
     )
     min_instance = config.get("min_instances", 0)
 
