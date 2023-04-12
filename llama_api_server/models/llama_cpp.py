@@ -25,7 +25,7 @@ class LlamaCppCompletion:
     def __init__(self, params):
         model_path = params["path"]
         self.model = _create_llama_model(model_path, False)
-        self.n_batch = params.get("n_batch", None) or 16
+        self.n_batch = params.get("n_batch", None) or 2
         self.n_thread = params.get("n_thread", None) or 4
 
     def completions(self, args):
@@ -88,7 +88,7 @@ class LlamaCppEmbedding:
     def __init__(self, params):
         model_path = params["path"]
         self.model = _create_llama_model(model_path, True)
-        self.n_batch = params.get("n_batch", None) or 16
+        self.n_batch = params.get("n_batch", None) or 2
         self.n_thread = params.get("n_thread", None) or 4
 
     def embeddings(self, args):

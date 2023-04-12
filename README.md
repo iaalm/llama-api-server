@@ -15,7 +15,7 @@ Llama as a Service! This project try to build a REST-ful API server compatible t
 #### llama.cpp
 If you you don't have quantized llama.cpp, you need to follow [instruction](https://github.com/ggerganov/llama.cpp#usage) to prepare model.
 
-#### llama.cpp
+#### pyllama
 If you you don't have quantize pyllama, you need to follow [instruction](https://github.com/juncongmoo/pyllama#-quantize-llama-to-run-in-a-4gb-gpu) to prepare model.
 
 
@@ -33,6 +33,10 @@ models:
       type: llama_cpp
       params:
         path: /absolute/path/to/your/7B/ggml-model-q4_0.bin
+    text-davinci-002:
+      type: pyllama_quant
+      params:
+        path: /absolute/path/to/your/pyllama-7B4b.pt
     text-davinci-003:
       type: pyllama
       params:
