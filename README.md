@@ -59,7 +59,10 @@ python -m llama_api_server
 ```
 export OPENAI_API_KEY=SOME_TOKEN
 export OPENAI_API_BASE=http://127.0.0.1:5000/v1
-openai api completions.create -e text-davinci-003 -p "hello?"
+
+openai api completions.create -e text-ada-002 -p "hello?"
+
+curl -X POST http://127.0.0.1:5000/v1/embeddings -H 'Content-Type: application/json' -d '{"model":"text-embedding-ada-002", "input":"It is good."}'  -H "Authorization: Bearer SOME_TOKEN"
 ```
 
 ## Roadmap
@@ -85,7 +88,9 @@ openai api completions.create -e text-davinci-003 -p "hello?"
 
 #### Supported backed
 - [X] [llama.cpp](https://github.com/ggerganov/llama.cpp) via [llamacpp-python](https://github.com/thomasantony/llamacpp-python)
-- [ ] [pyllama](https://github.com/juncongmoo/pyllama)
+- [X] [llama](https://github.com/facebookresearch/llama) via [pyllama](https://github.com/juncongmoo/pyllama)
+    - [X] Without Quantization
+    - [X] With Quantization
 
 #### Others
 - [X] Performance parameters like `n_batch` and `n_thread`

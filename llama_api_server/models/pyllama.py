@@ -1,7 +1,14 @@
+import os
+import json
+from pathlib import Path
+from llama_api_server.utils import get_uuid, get_timestamp
+
+
 class PyLlamaCompletion:
     def __init__(self, params):
         try:
             import llama
+            import torch
         except ImportError:
             raise ImportError(
                 'To run model with pyllama, please run "python -m pip install pyllama transformers" first'
@@ -12,14 +19,32 @@ class PyLlamaCompletion:
         max_batch_size = params.get("max_batch_size", None) or 16
         ckpt_dir = params["ckpt_dir"]
         tokenizer_path = params["tokenizer_path"]
-        self.model = load(
-            ckpt_dir,
-            tokenizer_path,
-            local_rank,
-            world_size,
-            max_seq_len,
-            max_batch_size,
+        device = params.get("device", "cuda")
+        checkpoints = sorted(Path(ckpt_dir).glob("*.pth"))
+        assert world_size == len(
+            checkpoints
+        ), f"Loading a checkpoint for MP={len(checkpoints)} but world size is {world_size}"
+        ckpt_path = checkpoints[local_rank]
+
+        checkpoint = torch.load(ckpt_path, map_location="cpu")
+
+        with open(Path(ckpt_dir) / "params.json", "r") as f:
+            params = json.loads(f.read())
+
+        model_args: ModelArgs = llama.ModelArgs(
+            max_seq_len=max_seq_len, max_batch_size=max_batch_size, **params
         )
+        tokenizer = llama.Tokenizer(model_path=tokenizer_path)
+        model_args.vocab_size = tokenizer.n_words
+        if device.startswith("cuda"):
+            torch.set_default_tensor_type(torch.cuda.HalfTensor)
+        else:
+            os.environ['KV_CAHCHE_IN_GPU'] = "0"
+            torch.set_default_tensor_type(torch.FloatTensor)
+        model = llama.Transformer(model_args)
+        torch.set_default_tensor_type(torch.FloatTensor)
+        model.load_state_dict(checkpoint, strict=False)
+        self.model = llama.LLaMA(model, tokenizer)
 
     def completions(self, args):
         prompt = args["prompt"]
@@ -29,8 +54,8 @@ class PyLlamaCompletion:
         temp = args["temperature"]
         max_tokens = args["max_tokens"]
         result = prompt if echo else ""
-        result += generator.generate(
-            [prompt], max_gen_len=max_gen_len, temperature=temp, top_p=top_p
+        result += self.model.generate(
+            [prompt], max_gen_len=max_tokens, temperature=temp, top_p=top_p
         )
         finish_reason = "length"
         c_prompt_tokens = n_past = 0
@@ -53,3 +78,5 @@ class PyLlamaCompletion:
                 "total_tokens": n_past,
             },
         }
+
+

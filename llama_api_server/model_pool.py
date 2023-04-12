@@ -4,6 +4,7 @@ from functools import cache
 from threading import Lock
 from llama_api_server.models.llama_cpp import LlamaCppCompletion, LlamaCppEmbedding
 from llama_api_server.models.pyllama import PyLlamaCompletion
+from llama_api_server.models.pyllama_quant import PyLlamaQuantCompletion
 from .config import get_config
 
 # Eventhrough python is not good at multi-threading, but must work is done by backend,
@@ -16,7 +17,11 @@ _lock = Lock()
 
 MODEL_TYPE_MAPPING = {
     "embeddings": {"llama_cpp": LlamaCppEmbedding},
-    "completions": {"llama_cpp": LlamaCppCompletion, "pyllama": PyLlamaCompletion},
+    "completions": {
+        "llama_cpp": LlamaCppCompletion,
+        "pyllama": PyLlamaCompletion,
+        "pyllama_quant": PyLlamaQuantCompletion,
+    },
 }
 
 
