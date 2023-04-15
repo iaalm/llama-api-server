@@ -3,6 +3,7 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Release](https://github.com/iaalm/llama-api-server/actions/workflows/release.yml/badge.svg)](https://github.com/iaalm/llama-api-server/actions/workflows/release.yml)
+[![PyPI version](https://badge.fury.io/py/llama-api-server.svg)](https://badge.fury.io/py/llama-api-server)
 
 This project is under active deployment. Breaking changes could be made any time.
 
@@ -20,6 +21,7 @@ If you you don't have quantize pyllama, you need to follow [instruction](https:/
 
 
 ## Install
+Use following script to download package from [PyPI](https://pypi.org/project/llama-api-server) and generates model config file `config.yml` and security token file `tokens.txt`.
 ```
 pip install llama-api-server
 

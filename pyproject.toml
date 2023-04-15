@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "llama_api_server"
 version = "0.2.2"
-description = ""
+description = "A OpenAI API compatible REST server for llama."
 authors = [
     {name = "iaalm", email= "iaalmsimon@gmail.com"}
 ]
