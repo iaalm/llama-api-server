@@ -16,7 +16,7 @@ class PyLlamaCompletion:
         local_rank = 0
         world_size = 1
         max_seq_len = params.get("max_seq_len", None) or 2048
-        max_batch_size = params.get("max_batch_size", None) or 16
+        max_batch_size = params.get("max_batch_size", None) or 2
         ckpt_dir = params["ckpt_dir"]
         tokenizer_path = params["tokenizer_path"]
         device = params.get("device", "cuda")
@@ -53,10 +53,9 @@ class PyLlamaCompletion:
         echo = args["echo"]
         temp = args["temperature"]
         max_tokens = args["max_tokens"]
-        result = prompt if echo else ""
-        result += self.model.generate(
+        result = self.model.generate(
             [prompt], max_gen_len=max_tokens, temperature=temp, top_p=top_p
-        )
+        )[0]
         finish_reason = "length"
         c_prompt_tokens = n_past = 0
         return {

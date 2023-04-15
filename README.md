@@ -42,6 +42,9 @@ models:
       params:
         ckpt_dir: /absolute/path/to/your/7B/
         tokenizer_path: /absolute/path/to/your/tokenizer.model
+      # keep to 1 instance to speed up loading of model
+      min_instance: 1
+      max_instance: 1
   embeddings:
     text-embedding-ada-002:
       type: llama_cpp

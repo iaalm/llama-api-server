@@ -36,7 +36,6 @@ class PyLlamaQuantCompletion:
         echo = args["echo"]
         temp = args["temperature"]
         max_tokens = args["max_tokens"]
-        result = prompt if echo else ""
 
         input_ids = self.tokenizer.encode(prompt, return_tensors="pt").to(self.dev)
 
@@ -45,11 +44,11 @@ class PyLlamaQuantCompletion:
                 input_ids,
                 do_sample=True,
                 min_length=1,
-                max_length=max_tokens,
+                max_new_tokens=max_tokens,
                 top_p=top_p,
                 temperature=temp,
             )
-        result += self.tokenizer.decode([el.item() for el in generated_ids[0]])
+        result = self.tokenizer.decode([el.item() for el in generated_ids[0]])
         finish_reason = "length"
         c_prompt_tokens = len(input_ids)
         c_completion_tokens = len(generated_ids)
