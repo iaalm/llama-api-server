@@ -3,7 +3,7 @@ from pathlib import Path
 from llama_api_server.utils import get_uuid, get_timestamp
 
 
-class PyLlamaQuantCompletion:
+class PyLlamaQuant:
     def __init__(self, params):
         try:
             import llama
@@ -69,5 +69,39 @@ class PyLlamaQuantCompletion:
                 "prompt_tokens": c_prompt_tokens,
                 "completion_tokens": c_completion_tokens,
                 "total_tokens": c_prompt_tokens + c_completion_tokens,
+            },
+        }
+
+    def embeddings(self, args):
+        import torch
+
+        inputs = args["input"]
+        if isinstance(inputs, str):
+            inputs = [inputs]
+            is_array = False
+        else:
+            is_array = True
+
+        input_ids = self.tokenizer.encode(inputs, return_tensors="pt").to(self.dev)
+
+        with torch.no_grad():
+            hidden_states = self.model(
+                input_ids, output_hidden_states=True
+            ).hidden_states
+            # [0] for embedding layers
+            embeds = torch.squeeze(torch.mean(hidden_states[0], 1), 1).tolist()
+
+        if not is_array:
+            print("squee")
+            embeds = embeds[0]
+
+        c_prompt_tokens = sum([len(i) for i in input_ids])
+        return {
+            "object": "list",
+            "data": [{"object": "embedding", "embedding": embeds, "index": 0}],
+            "model": args["model"],
+            "usage": {
+                "prompt_tokens": c_prompt_tokens,
+                "total_tokens": c_prompt_tokens,
             },
         }

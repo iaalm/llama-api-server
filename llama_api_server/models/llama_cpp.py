@@ -93,7 +93,7 @@ class LlamaCppEmbedding:
 
     def embeddings(self, args):
         inputs = args["input"]
-        if inputs is str:
+        if isinstance(inputs, str):
             inputs = [inputs]
             is_array = False
         else:
@@ -115,7 +115,7 @@ class LlamaCppEmbedding:
         c_prompt_tokens = len(prompt_tokens)
         return {
             "object": "list",
-            "data": [{"object": "embedding", "embedding": embed, "index": 0}],
+            "data": [{"object": "embedding", "embedding": embeds, "index": 0}],
             "model": args["model"],
             "usage": {
                 "prompt_tokens": c_prompt_tokens,
