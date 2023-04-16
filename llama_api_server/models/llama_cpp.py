@@ -39,6 +39,8 @@ class LlamaCppCompletion:
         repeat_penalty = 1.3
 
         prompt = args["prompt"]
+        if isinstanceof(prompt, list):
+            prompt = prompt[0]
         prompt_tokens = self.model.str_to_token(prompt, True).tolist()
         n_past = _eval_token(
             self.model, prompt_tokens[:-1], 0, self.n_batch, self.n_thread
