@@ -95,9 +95,6 @@ class LlamaCppEmbedding:
         inputs = args["input"]
         if isinstance(inputs, str):
             inputs = [inputs]
-            is_array = False
-        else:
-            is_array = True
         embeds = []
 
         for i in inputs:
@@ -109,7 +106,7 @@ class LlamaCppEmbedding:
             embed = unpack_cfloat_array(self.model.get_embeddings())
             embeds.append(embed)
 
-        if not is_array:
+        if len(embeds) == 1:
             embeds = embeds[0]
 
         c_prompt_tokens = len(prompt_tokens)

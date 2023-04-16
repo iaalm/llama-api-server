@@ -78,9 +78,6 @@ class PyLlamaQuant:
         inputs = args["input"]
         if isinstance(inputs, str):
             inputs = [inputs]
-            is_array = False
-        else:
-            is_array = True
 
         input_ids = self.tokenizer.encode(inputs, return_tensors="pt").to(self.dev)
 
@@ -91,8 +88,7 @@ class PyLlamaQuant:
             # [0] for embedding layers
             embeds = torch.squeeze(torch.mean(hidden_states[0], 1), 1).tolist()
 
-        if not is_array:
-            print("squee")
+        if len(embeds) == 1:
             embeds = embeds[0]
 
         c_prompt_tokens = sum([len(i) for i in input_ids])
