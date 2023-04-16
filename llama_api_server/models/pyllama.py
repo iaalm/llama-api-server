@@ -4,7 +4,7 @@ from pathlib import Path
 from llama_api_server.utils import get_uuid, get_timestamp
 
 
-class PyLlamaCompletion:
+class PyLlama:
     def __init__(self, params):
         try:
             import llama
@@ -39,7 +39,7 @@ class PyLlamaCompletion:
         if device.startswith("cuda"):
             torch.set_default_tensor_type(torch.cuda.HalfTensor)
         else:
-            os.environ['KV_CAHCHE_IN_GPU'] = "0"
+            os.environ["KV_CAHCHE_IN_GPU"] = "0"
             torch.set_default_tensor_type(torch.FloatTensor)
         model = llama.Transformer(model_args)
         torch.set_default_tensor_type(torch.FloatTensor)
@@ -48,6 +48,8 @@ class PyLlamaCompletion:
 
     def completions(self, args):
         prompt = args["prompt"]
+        if isinstanceof(prompt, list):
+            prompt = prompt[0]
         top_p = args["top_p"]
         suffix = args["suffix"]
         echo = args["echo"]
@@ -78,4 +80,32 @@ class PyLlamaCompletion:
             },
         }
 
+    def embeddings(self, args):
+        import torch
 
+        inputs = args["input"]
+        if isinstance(inputs, str):
+            inputs = [inputs]
+
+        input_ids = self.tokenizer.encode(inputs, return_tensors="pt").to(self.dev)
+
+        with torch.no_grad():
+            hidden_states = self.model(
+                input_ids, output_hidden_states=True
+            ).hidden_states
+            # [0] for embedding layers
+            embeds = torch.squeeze(torch.mean(hidden_states[0], 1), 1).tolist()
+
+        if len(embeds) == 1:
+            embeds = embeds[0]
+
+        c_prompt_tokens = sum([len(i) for i in input_ids])
+        return {
+            "object": "list",
+            "data": [{"object": "embedding", "embedding": embeds, "index": 0}],
+            "model": args["model"],
+            "usage": {
+                "prompt_tokens": c_prompt_tokens,
+                "total_tokens": c_prompt_tokens,
+            },
+        }

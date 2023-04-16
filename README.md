@@ -45,9 +45,14 @@ models:
         ckpt_dir: /absolute/path/to/your/7B/
         tokenizer_path: /absolute/path/to/your/tokenizer.model
       # keep to 1 instance to speed up loading of model
+  embeddings:
+    text-embedding-davinci-002:
+      type: pyllama_quant
+      params:
+        path: /absolute/path/to/your/pyllama-7B4b.pt
       min_instance: 1
       max_instance: 1
-  embeddings:
+      idle_timeout: 3600
     text-embedding-ada-002:
       type: llama_cpp
       params:

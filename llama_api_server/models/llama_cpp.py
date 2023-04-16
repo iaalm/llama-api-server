@@ -39,6 +39,8 @@ class LlamaCppCompletion:
         repeat_penalty = 1.3
 
         prompt = args["prompt"]
+        if isinstanceof(prompt, list):
+            prompt = prompt[0]
         prompt_tokens = self.model.str_to_token(prompt, True).tolist()
         n_past = _eval_token(
             self.model, prompt_tokens[:-1], 0, self.n_batch, self.n_thread
@@ -93,11 +95,8 @@ class LlamaCppEmbedding:
 
     def embeddings(self, args):
         inputs = args["input"]
-        if inputs is str:
+        if isinstance(inputs, str):
             inputs = [inputs]
-            is_array = False
-        else:
-            is_array = True
         embeds = []
 
         for i in inputs:
@@ -109,13 +108,13 @@ class LlamaCppEmbedding:
             embed = unpack_cfloat_array(self.model.get_embeddings())
             embeds.append(embed)
 
-        if not is_array:
+        if len(embeds) == 1:
             embeds = embeds[0]
 
         c_prompt_tokens = len(prompt_tokens)
         return {
             "object": "list",
-            "data": [{"object": "embedding", "embedding": embed, "index": 0}],
+            "data": [{"object": "embedding", "embedding": embeds, "index": 0}],
             "model": args["model"],
             "usage": {
                 "prompt_tokens": c_prompt_tokens,

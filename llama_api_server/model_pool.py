@@ -3,8 +3,8 @@ from collections import defaultdict
 from functools import cache
 from threading import Lock
 from llama_api_server.models.llama_cpp import LlamaCppCompletion, LlamaCppEmbedding
-from llama_api_server.models.pyllama import PyLlamaCompletion
-from llama_api_server.models.pyllama_quant import PyLlamaQuantCompletion
+from llama_api_server.models.pyllama import PyLlama
+from llama_api_server.models.pyllama_quant import PyLlamaQuant
 from .config import get_config
 
 # Eventhrough python is not good at multi-threading, but must work is done by backend,
@@ -16,11 +16,15 @@ _pool_count = defaultdict(lambda: defaultdict(int))
 _lock = Lock()
 
 MODEL_TYPE_MAPPING = {
-    "embeddings": {"llama_cpp": LlamaCppEmbedding},
+    "embeddings": {
+        "llama_cpp": LlamaCppEmbedding,
+        "pyllama": PyLlama,
+        "pyllama_quant": PyLlamaQuant,
+    },
     "completions": {
         "llama_cpp": LlamaCppCompletion,
-        "pyllama": PyLlamaCompletion,
-        "pyllama_quant": PyLlamaQuantCompletion,
+        "pyllama": PyLlama,
+        "pyllama_quant": PyLlamaQuant,
     },
 }
 
