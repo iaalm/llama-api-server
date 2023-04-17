@@ -11,7 +11,7 @@ Flask==2.2.3
 hiq-python==1.1.11
 huggingface-hub==0.13.3
 idna==3.4
-importlib-metadata==6.3.0
+importlib-metadata==6.4.1
 itsdangerous==2.1.2
 Jinja2==3.1.2
 llamacpp==0.1.13
