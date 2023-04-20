@@ -31,7 +31,7 @@ class PyLlamaQuant:
         import torch
 
         prompt = args["prompt"]
-        if isinstanceof(prompt, list):
+        if isinstance(prompt, list):
             prompt = prompt[0]
         top_p = args["top_p"]
         suffix = args["suffix"]
