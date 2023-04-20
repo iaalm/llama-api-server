@@ -78,14 +78,16 @@ curl -X POST http://127.0.0.1:5000/v1/embeddings -H 'Content-Type: application/j
 # 🛣️Roadmap
 
 ### Tested with
-- [X] openai-python
+- [X] [openai-python](https://github.com/openai/openai-python)
     - [X] OPENAI\_API\_TYPE=default
     - [X] OPENAI\_API\_TYPE=azure
+- [X] [llama-index](https://github.com/jerryjliu/llama_index)
 
 ### Supported APIs
 - [X] Completions
     - [X] set `temperature`, `top_p`, and `top_k`
     - [X] set `max_tokens`
+    - [ ] set `echo`
     - [ ] set `stop`
     - [ ] set `stream`
     - [ ] set `n`
