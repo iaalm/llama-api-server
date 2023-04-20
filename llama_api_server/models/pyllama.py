@@ -11,7 +11,7 @@ class PyLlama:
             import torch
         except ImportError:
             raise ImportError(
-                'To run model with pyllama, please run "python -m pip install \'llama-api-server[pyllama]\'" first'
+                "To run model with pyllama, please run \"python -m pip install 'llama-api-server[pyllama]'\" first"
             )
         local_rank = 0
         world_size = 1
