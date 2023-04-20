@@ -13,7 +13,7 @@ class PyLlamaQuant:
             from llama.llama_quant import load_quant
         except ImportError:
             raise ImportError(
-                'To run model with pyllama, please run "python -m pip install pyllama transformers" first'
+                'To run model with pyllama, please run "python -m pip install \'llama-api-server[pyllama]\'" first'
             )
         max_seq_len = params.get("max_seq_len", None) or 2048
         max_batch_size = params.get("max_batch_size", None) or 16

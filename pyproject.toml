@@ -33,6 +33,7 @@ dependencies = [
 pyllama = [
     "pyllama>=0.0.9",
     "transformers>=4.27.4",
+    "gptq",
 ]
 
 [project.urls]
