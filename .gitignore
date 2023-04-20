@@ -1,6 +1,7 @@
 /models
 *.swp
 /.idea
+/tags
 .DS_Store
 /config.yml
 /tokens.txt

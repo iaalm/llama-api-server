@@ -9,7 +9,7 @@ format:
 	$(PYTHON) -m black llama_api_server
 
 tags:
-	ctags -R pretzel
+	ctags -R llama_api_server
 
 pack:
 	$(PYTHON) -m build
