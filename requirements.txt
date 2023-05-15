@@ -42,7 +42,7 @@ tokenizers==0.13.2
 tomli==2.0.1
 torch==2.0.0
 tqdm==4.65.0
-transformers==4.27.4
+transformers==4.29.1
 typing_extensions==4.5.0
 urllib3==1.26.15
 Werkzeug==2.2.3
