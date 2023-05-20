@@ -37,7 +37,7 @@ rich==13.3.4
 sentencepiece==0.1.97
 six==1.16.0
 sympy==1.11.1
-termcolor==2.2.0
+termcolor==2.3.0
 tokenizers==0.13.3
 tomli==2.0.1
 torch==2.0.0
