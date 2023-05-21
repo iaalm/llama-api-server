@@ -28,7 +28,7 @@ pip install llama-api-server
 # to run wth pyllama
 pip install llama-api-server[pyllama]
 
-echo > config.yml << EOF
+cat > config.yml << EOF
 models:
   completions:
     text-ada-002:
@@ -63,6 +63,9 @@ echo "SOME_TOKEN" > tokens.txt
 
 # start web server
 python -m llama_api_server
+# or visible across the network
+python -m llama_api_server --host=0.0.0.0
+
 ```
 
 ## Call with openai-python
