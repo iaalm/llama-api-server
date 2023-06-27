@@ -9,6 +9,8 @@ This project is under active deployment. Breaking changes could be made any time
 
 Llama as a Service! This project try to build a REST-ful API server compatible to OpenAI API using open source backends like llama.
 
+With this project, many common GPT tools/framework can compatible with your own model.
+
 # 🚀Get started
 
 ## Prepare model
