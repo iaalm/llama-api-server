@@ -33,6 +33,7 @@ pip install llama-api-server[pyllama]
 cat > config.yml << EOF
 models:
   completions:
+    # completions and chat_completions use same model
     text-ada-002:
       type: llama_cpp
       params:
@@ -100,7 +101,8 @@ curl -X POST http://127.0.0.1:5000/v1/embeddings -H 'Content-Type: application/j
     - [ ] set `logit_bias`
 - [X] Embeddings
     - [X] batch process
-- [ ] Chat
+- [X] Chat
+    - [ ] Prefix cache for chat
 - [ ] List model
 
 ### Supported backends
