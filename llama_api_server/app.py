@@ -59,7 +59,10 @@ def chat_completions(name, args):
     with get_model("completions", name) as model:
         res = model.completions(args)
 
-    res["choices"][0]["message"] = {"role": "assistant", "content": res["choices"][0]["text"]}
+    res["choices"][0]["message"] = {
+        "role": "assistant",
+        "content": res["choices"][0]["text"],
+    }
     res["choices"][0]["text"] = None
     res["choices"][0]["logprobs"] = None
     return res

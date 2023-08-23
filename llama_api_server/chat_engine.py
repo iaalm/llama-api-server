@@ -30,4 +30,3 @@ def dialog_to_llama_prompt(dialog):
     output += f"{B_INST} {(dialog[-1]['content']).strip()} {E_INST}"
 
     return output
-
