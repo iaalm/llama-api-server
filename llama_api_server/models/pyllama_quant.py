@@ -51,6 +51,8 @@ class PyLlamaQuant:
                 temperature=temp,
             )
         result = self.tokenizer.decode([el.item() for el in generated_ids[0]])
+        if not echo:
+            result = result[len(prompt) :]
         finish_reason = "length"
         c_prompt_tokens = len(input_ids)
         c_completion_tokens = len(generated_ids)

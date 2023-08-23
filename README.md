@@ -7,7 +7,7 @@
 
 This project is under active deployment. Breaking changes could be made any time.
 
-Llama as a Service! This project try to build a REST-ful API server compatible to OpenAI API using open source backends like llama.
+Llama as a Service! This project try to build a REST-ful API server compatible to OpenAI API using open source backends like llama/llama2.
 
 With this project, many common GPT tools/framework can compatible with your own model.
 
@@ -110,6 +110,7 @@ curl -X POST http://127.0.0.1:5000/v1/embeddings -H 'Content-Type: application/j
 - [X] [llama](https://github.com/facebookresearch/llama) via [pyllama](https://github.com/juncongmoo/pyllama)
     - [X] Without Quantization
     - [X] With Quantization
+    - [X] Support LLAMA2
 
 ### Others
 - [X] Performance parameters like `n_batch` and `n_thread`

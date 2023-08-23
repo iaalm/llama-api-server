@@ -58,6 +58,8 @@ class PyLlama:
         result = self.model.generate(
             [prompt], max_gen_len=max_tokens, temperature=temp, top_p=top_p
         )[0]
+        if not echo:
+            result = result[len(prompt) :]
         finish_reason = "length"
         c_prompt_tokens = n_past = 0
         return {
