@@ -95,7 +95,7 @@ curl -X POST http://127.0.0.1:5000/v1/embeddings -H 'Content-Type: application/j
 - [X] Completions
     - [X] set `temperature`, `top_p`, and `top_k`
     - [X] set `max_tokens`
-    - [ ] set `echo`
+    - [X] set `echo`
     - [ ] set `stop`
     - [ ] set `stream`
     - [ ] set `n`

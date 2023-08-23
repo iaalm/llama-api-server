@@ -46,7 +46,7 @@ class LlamaCppCompletion:
             self.model, prompt_tokens[:-1], 0, self.n_batch, self.n_thread
         )
 
-        result = prompt if echo else ""
+        result = ""
         token = prompt_tokens[-1]
         finish_reason = "length"
         for i in range(max_tokens):
@@ -64,6 +64,8 @@ class LlamaCppCompletion:
             result += text
             n_past += 1
 
+        if not echo:
+            result = result[len(prompt) :]
         c_prompt_tokens = len(prompt_tokens)
         return {
             "id": get_uuid(),
