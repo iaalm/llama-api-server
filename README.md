@@ -77,7 +77,9 @@ export OPENAI_API_KEY=SOME_TOKEN
 export OPENAI_API_BASE=http://127.0.0.1:5000/v1
 
 openai api completions.create -e text-ada-002 -p "hello?"
-
+# or using chat
+openai api chat_completions.create -e text-ada-002 -g user "hello?"
+# or calling embedding
 curl -X POST http://127.0.0.1:5000/v1/embeddings -H 'Content-Type: application/json' -d '{"model":"text-embedding-ada-002", "input":"It is good."}'  -H "Authorization: Bearer SOME_TOKEN"
 ```
 
