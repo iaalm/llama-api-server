@@ -13,6 +13,11 @@ With this project, many common GPT tools/framework can compatible with your own 
 
 # 🚀Get started
 
+## Try it online!
+
+Follow instruction in [this collab notebook](https://colab.research.google.com/drive/1uF77533sIQLA_EIG83jjfayvqJiyalqp) to play it online.
+Thanks [anythingbutme](https://github.com/anythingbutme) for building it!
+
 ## Prepare model
 
 ### llama.cpp
