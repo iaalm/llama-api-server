@@ -16,6 +16,6 @@ fi
 
 python -m hatch version $number
 v=$(python -m hatch version)
-git commit llama_api_server/__about__.py -m "Bump version to $v"
+git commit llama_api_server/__about__.py -m "Bump version to $v" --no-verify
 git tag v$v
 git push origin HEAD --tags
