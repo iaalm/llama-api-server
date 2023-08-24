@@ -4,7 +4,6 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llama_api_server"
-version = "0.3.4"
 description = "A OpenAI API compatible REST server for llama."
 authors = [
     {name = "iaalm", email= "iaalmsimon@gmail.com"}
@@ -12,6 +11,9 @@ authors = [
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.9"
+dynamic = [
+    "version",
+]
 
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -39,3 +41,6 @@ pyllama = [
 [project.urls]
 homepage = "https://github.com/iaalm/llama-api-server"
 repository = "https://github.com/iaalm/llama-api-server"
+
+[tool.hatch.version]
+path = "llama_api_server/__about__.py"
