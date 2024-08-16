@@ -10,6 +10,11 @@ load_config(app)
 
 
 @cache
+def isAuthEnabled():
+    token_file = app.config.get("TOKEN_FILE", None)
+    return token_file is not None
+
+@cache
 def getValidTokens():
     token_file = app.config["TOKEN_FILE"]
     with open(token_file, "r") as fd:
@@ -19,6 +24,8 @@ def getValidTokens():
 def requireToken(f):
     @wraps(f)
     def inner(*args, **kwargs):
+        if not isAuthEnabled():
+            return f(*args, **kwargs)
         token = request.headers.get("Authorization")
         if token is not None:
             # OpenAI style token
