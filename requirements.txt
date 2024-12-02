@@ -8,7 +8,7 @@ fairscale==0.4.13
 filelock==3.13.1
 fire==0.5.0
 Flask==2.3.2
-hiq-python==1.1.11
+hiq-python==1.1.13
 huggingface-hub==0.15.1
 idna==3.4
 importlib-metadata==6.8.0
