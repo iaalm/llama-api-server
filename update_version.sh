@@ -15,6 +15,10 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 python -m hatch version $number
+if [ $? -ne 0 ]; then
+  echo "Update version with hatch failed";
+  exit 1
+fi
 v=$(python -m hatch version)
 git commit llama_api_server/__about__.py -m "Bump version to $v" --no-verify
 git tag v$v
